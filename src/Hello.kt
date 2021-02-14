@@ -52,36 +52,58 @@ import java.util.*
 //    swim(speed="turtle-like")
 //}
 
-fun main() {
-    val decorations = listOf ("rock", "pagoda", "plastic plant", "alligator", "flowerpot")
+//fun main() {
+//    val decorations = listOf ("rock", "pagoda", "plastic plant", "alligator", "flowerpot")
+//
+//    // eager, creates a new list
+//    val eager = decorations.filter { it [0] == 'p' }
+//    println("eager: $eager")
+//
+//    // lazy, will wait until asked to evaluate
+//    val filtered = decorations.asSequence().filter { it[0] == 'p' }
+//    println("filtered: $filtered")
+//
+//    // force evaluation of the lazy list
+//    val newList = filtered.toList()
+//    println("new list: $newList")
+//
+//    val lazyMap = decorations.asSequence().map {
+//        println("access: $it")
+//        it
+//    }
+//
+//    println("lazy: $lazyMap")
+//    println("-----")
+//    println("first: ${lazyMap.first()}")
+//    println("-----")
+//    println("all: ${lazyMap.toList()}")
+//
+//    val lazyMap2 = decorations.asSequence().filter{it[0] == 'p'}.map{
+//        println("access: $it")
+//        it
+//    }
+//    println("---------------")
+//    print("filtered: ${lazyMap2.toList()}")
+//}
 
-    // eager, creates a new list
-    val eager = decorations.filter { it [0] == 'p' }
-    println("eager: $eager")
+fun updateDirty(dirty: Int, operation: (Int) -> Int): Int {
+    return operation(dirty)
+}
 
-    // lazy, will wait until asked to evaluate
-    val filtered = decorations.asSequence().filter { it[0] == 'p' }
-    println("filtered: $filtered")
+fun increaseDirty( start: Int ) = start + 1
 
-    // force evaluation of the lazy list
-    val newList = filtered.toList()
-    println("new list: $newList")
+fun main(){
+//    var dirtyLevel = 20
+//    val waterFilter = { dirty : Int -> dirty / 2}
+//    println(waterFilter(dirtyLevel))
 
-    val lazyMap = decorations.asSequence().map {
-        println("access: $it")
-        it
-    }
+    val waterFilter: (Int) -> Int = { dirty -> dirty / 2 }
+    println("update dirty" + updateDirty(30, waterFilter))
 
-    println("lazy: $lazyMap")
-    println("-----")
-    println("first: ${lazyMap.first()}")
-    println("-----")
-    println("all: ${lazyMap.toList()}")
+    println("update dirty using '::' operator " + updateDirty(15, ::increaseDirty))
 
-    val lazyMap2 = decorations.asSequence().filter{it[0] == 'p'}.map{
-        println("access: $it")
-        it
-    }
-    println("---------------")
-    print("filtered: ${lazyMap2.toList()}")
+    var dirtyLevel = 19;
+    dirtyLevel = updateDirty(dirtyLevel) { dirtyLevel -> dirtyLevel + 23}
+    println(dirtyLevel)
+
 }
